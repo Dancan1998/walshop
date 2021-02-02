@@ -8,3 +8,10 @@ main {
   height: 1rem;
   background: lavender;
 }
+h5 {
+  padding: 1rem 0;
+}
+
+.rating span {
+  margin: 0.1rem;
+}
