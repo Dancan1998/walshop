@@ -1,0 +1,10 @@
+main {
+  min-height: calc(100vh - 10rem);
+}
+.navbar {
+  height: 4rem;
+}
+.footer {
+  height: 1rem;
+  background: lavender;
+}
