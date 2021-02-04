@@ -22,5 +22,11 @@ export const cartReducer = (state = initialState, action) => {
       };
     }
   }
+  if (action.type === CART_REMOVE_ITEM) {
+    return {
+      ...state,
+      cartItems: state.cartItems.filter((x) => x.product !== action.payload),
+    };
+  }
   return state;
 };
