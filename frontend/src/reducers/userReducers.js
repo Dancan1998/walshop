@@ -9,6 +9,9 @@ import {
   USER_REGISTER_FAIL,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
+  USER_UPDATE_PROFILE_FAIL,
+  USER_UPDATE_PROFILE_REQUEST,
+  USER_UPDATE_PROFILE_SUCCESS,
 } from "../constants/userConstants";
 
 const initialState = {
@@ -16,6 +19,7 @@ const initialState = {
   userInfo: {},
   error: false,
   user: {},
+  success: false,
 };
 
 export const userLoginReducer = (state = initialState, action) => {
@@ -85,6 +89,32 @@ export const userDetailsReducer = (state = initialState, action) => {
     };
   }
   if (action.type === USER_DETAILS_FAIL) {
+    return {
+      ...state,
+      loading: false,
+      error: action.payload,
+    };
+  }
+
+  return state;
+};
+
+export const userUpdateProfileReducer = (state = initialState, action) => {
+  if (action.type === USER_UPDATE_PROFILE_REQUEST) {
+    return {
+      ...state,
+      loading: true,
+    };
+  }
+  if (action.type === USER_UPDATE_PROFILE_SUCCESS) {
+    return {
+      ...state,
+      loading: false,
+      userInfo: action.payload,
+      success: true,
+    };
+  }
+  if (action.type === USER_UPDATE_PROFILE_FAIL) {
     return {
       ...state,
       loading: false,
