@@ -1,54 +1,55 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
+import { PayPalButton } from "react-paypal-button-v2";
 import { Row, Col, Card, Image, ListGroup } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { getOrderDetails } from "../actions/orderActions";
+import { getOrderDetails, payOrder } from "../actions/orderActions";
+import { ORDER_PAY_RESET } from "../constants/orderConstants";
 
 const OrderScreen = ({ match }) => {
   const orderId = match.params.id;
+  const [sdkReady, setSdkReady] = useState(false);
 
   const dispatch = useDispatch();
 
   const orderDetail = useSelector((state) => state.orderDetails);
   const { loading, error, order } = orderDetail;
-  // const itemsPrice = 0;
-  // const orderItems =
-  // const addDecimals = (num) => {
-  //   return (Math.round(num * 100) / 100).toFixed(2);
-  // };
-  // const itemsPrice = addDecimals(
-  //   order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
-  // );
-  // if (!loading) {
-  //   const addDecimals = (num) => {
-  //     return (Math.round(num * 100) / 100).toFixed(2);
-  //   };
-  //   const itemsPrice = addDecimals(
-  //     order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
-  //   );
-  //   return itemsPrice;
-  // }
 
-  console.log(orderDetail);
-  console.log(order);
+  const orderPay = useSelector((state) => state.orderPay);
+  const { loading: loadingPay, success: successPay } = orderPay;
 
-  // useEffect(() => {
-  //   dispatch(getOrderDetails(orderId));
-  // }, [dispatch, orderId]);
   useEffect(() => {
-    if (!order || order._id !== orderId) {
-      dispatch(getOrderDetails(orderId));
-    }
-  }, [order, dispatch, orderId]);
+    const addPayPalScript = async () => {
+      const { data: clientId } = await axios.get("/api/config/paypal");
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+      script.async = true;
+      script.onload = () => {
+        setSdkReady(true);
+      };
+      document.body.appendChild(script);
+    };
 
-  //  const addDecimals = (num) => {
-  //    return (Math.round(num * 100) / 100).toFixed(2);
-  //  };
-  //  const itemsPrice = addDecimals(
-  //   order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
-  //  );
+    if (!order || order._id !== orderId || successPay) {
+      dispatch({ type: ORDER_PAY_RESET });
+      dispatch(getOrderDetails(orderId));
+    } else if (!order.isPaid) {
+      if (!window.paypal) {
+        addPayPalScript();
+      } else {
+        setSdkReady(true);
+      }
+    }
+  }, [order, dispatch, orderId, successPay]);
+
+  const successPaymentHandler = (paymentResult) => {
+    console.log(paymentResult);
+    dispatch(payOrder(orderId, paymentResult));
+  };
 
   return loading ? (
     <Loader />
@@ -156,6 +157,19 @@ const OrderScreen = ({ match }) => {
                 <Col>${order.totalPrice}</Col>
               </Row>
             </ListGroup.Item>
+            {!order.isPaid && (
+              <ListGroup.Item>
+                {loadingPay && <Loader />}
+                {!sdkReady ? (
+                  <Loader />
+                ) : (
+                  <PayPalButton
+                    amount={order.totalPrice}
+                    onSuccess={successPaymentHandler}
+                  />
+                )}
+              </ListGroup.Item>
+            )}
           </Card>
         </Col>
       </Row>
