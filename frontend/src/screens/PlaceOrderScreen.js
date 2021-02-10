@@ -15,7 +15,6 @@ const PlaceOrderScreen = ({ history }) => {
   const { address, city, country, postalCode } = cart.shippingAddress;
   const paymentMethod = cart.paymentmethod;
   const cartItems = cart.cartItems;
-  console.log(cart);
   //Calculate prices
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
