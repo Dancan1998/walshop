@@ -12,6 +12,7 @@ import {
   ORDER_LIST_MY_REQUEST,
   ORDER_LIST_MY_SUCCESS,
   ORDER_LIST_MY_FAIL,
+  ORDER_LIST_MY_RESET,
 } from "../constants/orderConstants";
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -112,6 +113,12 @@ export const orderListMyReducer = (state = { orders: [] }, action) => {
       ...state,
       loading: false,
       error: action.payload,
+    };
+  }
+  if (action.type === ORDER_LIST_MY_RESET) {
+    return {
+      ...state,
+      orders: [],
     };
   }
   return state;
