@@ -16,11 +16,7 @@ const UserListScreen = ({ history }) => {
   const { userInfo } = userLogin;
 
   const userDelete = useSelector((state) => state.userDelete);
-  const {
-    loading: loadingDelete,
-    error: errorDelete,
-    success: successDelete,
-  } = userDelete;
+  const { success: successDelete } = userDelete;
 
   useEffect(() => {
     if (userInfo && userInfo.data.isAdmin) {
@@ -73,7 +69,7 @@ const UserListScreen = ({ history }) => {
                     )}
                   </td>
                   <td>
-                    <LinkContainer to={`/user/${user._id}/edit`}>
+                    <LinkContainer to={`/admin/user/${user._id}/edit`}>
                       <Button variant="light" className="btn btn-sm">
                         <i className="fas fa-edit"></i>
                       </Button>
