@@ -20,6 +20,10 @@ import {
   USER_DELETE_REQUEST,
   USER_DELETE_SUCCESS,
   USER_DELETE_FAIL,
+  USER_UPDATE_RESET,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
+  USER_UPDATE_FAIL,
 } from "../constants/userConstants";
 
 const initialState = {
@@ -188,6 +192,66 @@ export const userDeleteReducer = (state = {}, action) => {
       ...state,
       loading: false,
       error: action.payload,
+    };
+  }
+  return state;
+};
+
+export const userUpdateReducer = (state = { user: {} }, action) => {
+  if (action.type === USER_UPDATE_PROFILE_REQUEST) {
+    return {
+      ...state,
+      loading: true,
+    };
+  }
+  if (action.type === USER_UPDATE_PROFILE_SUCCESS) {
+    return {
+      ...state,
+      loading: false,
+      success: true,
+    };
+  }
+  if (action.type === USER_UPDATE_PROFILE_FAIL) {
+    return {
+      ...state,
+      loading: false,
+      error: action.payload,
+    };
+  }
+  if (action.type === USER_UPDATE_RESET) {
+    return {
+      ...state,
+      user: {},
+    };
+  }
+  return state;
+};
+
+export const userUpdatedReducer = (state = { user: {} }, action) => {
+  if (action.type === USER_UPDATE_REQUEST) {
+    return {
+      ...state,
+      loading: true,
+    };
+  }
+  if (action.type === USER_UPDATE_SUCCESS) {
+    return {
+      ...state,
+      loading: false,
+      success: true,
+    };
+  }
+  if (action.type === USER_UPDATE_FAIL) {
+    return {
+      ...state,
+      loading: false,
+      error: action.payload,
+    };
+  }
+  if (action.type === USER_UPDATE_RESET) {
+    return {
+      ...state,
+      user: {},
     };
   }
   return state;
