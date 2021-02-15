@@ -1,4 +1,7 @@
 import {
+  PRODUCT_DELETE_FAIL,
+  PRODUCT_DELETE_REQUEST,
+  PRODUCT_DELETE_SUCCESS,
   PRODUCT_DETAILS_FAIL,
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
@@ -55,6 +58,30 @@ export const productDetailsReducer = (state = initialState, action) => {
     };
   }
   if (action.type === PRODUCT_DETAILS_FAIL) {
+    return {
+      ...state,
+      loading: false,
+      error: action.payload,
+    };
+  }
+  return state;
+};
+
+export const productDeleteReducer = (state = {}, action) => {
+  if (action.type === PRODUCT_DELETE_REQUEST) {
+    return {
+      ...state,
+      loading: true,
+    };
+  }
+  if (action.type === PRODUCT_DELETE_SUCCESS) {
+    return {
+      ...state,
+      loading: false,
+      success: true,
+    };
+  }
+  if (action.type === PRODUCT_DELETE_FAIL) {
     return {
       ...state,
       loading: false,
