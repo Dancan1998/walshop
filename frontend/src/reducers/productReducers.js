@@ -1,4 +1,8 @@
 import {
+  PRODUCT_CREATE_FAIL,
+  PRODUCT_CREATE_REQUEST,
+  PRODUCT_CREATE_RESET,
+  PRODUCT_CREATE_SUCCESS,
   PRODUCT_DELETE_FAIL,
   PRODUCT_DELETE_REQUEST,
   PRODUCT_DELETE_SUCCESS,
@@ -87,6 +91,34 @@ export const productDeleteReducer = (state = {}, action) => {
       loading: false,
       error: action.payload,
     };
+  }
+  return state;
+};
+
+export const productCreateReducer = (state = {}, action) => {
+  if (action.type === PRODUCT_CREATE_REQUEST) {
+    return {
+      ...state,
+      loading: true,
+    };
+  }
+  if (action.type === PRODUCT_CREATE_SUCCESS) {
+    return {
+      ...state,
+      loading: false,
+      success: true,
+      product: action.payload,
+    };
+  }
+  if (action.type === PRODUCT_CREATE_FAIL) {
+    return {
+      ...state,
+      loading: false,
+      error: action.payload,
+    };
+  }
+  if (action.type === PRODUCT_CREATE_RESET) {
+    return {};
   }
   return state;
 };
