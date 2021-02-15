@@ -12,6 +12,10 @@ import {
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
+  PRODUCT_UPDATE_REQUEST,
+  PRODUCT_UPDATE_SUCCESS,
+  PRODUCT_UPDATE_FAIL,
+  PRODUCT_UPDATE_RESET,
 } from "../constants/productConstants";
 
 const initialState = {
@@ -119,6 +123,34 @@ export const productCreateReducer = (state = {}, action) => {
   }
   if (action.type === PRODUCT_CREATE_RESET) {
     return {};
+  }
+  return state;
+};
+
+export const productUpdateReducer = (state = { product: {} }, action) => {
+  if (action.type === PRODUCT_UPDATE_REQUEST) {
+    return {
+      ...state,
+      loading: true,
+    };
+  }
+  if (action.type === PRODUCT_UPDATE_SUCCESS) {
+    return {
+      ...state,
+      loading: false,
+      success: true,
+      product: action.payload,
+    };
+  }
+  if (action.type === PRODUCT_UPDATE_FAIL) {
+    return {
+      ...state,
+      loading: false,
+      error: action.payload,
+    };
+  }
+  if (action.type === PRODUCT_UPDATE_RESET) {
+    return { product: {} };
   }
   return state;
 };
