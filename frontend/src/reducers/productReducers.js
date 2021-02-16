@@ -42,7 +42,9 @@ export const productListReducer = (state = initialState, action) => {
     return {
       ...state,
       loading: false,
-      products: action.payload,
+      products: action.payload.products,
+      pages: action.payload.pages,
+      page: action.payload.page,
     };
   }
   if (action.type === PRODUCT_LIST_FAIL) {
