@@ -13,6 +13,9 @@ import {
   ORDER_LIST_MY_SUCCESS,
   ORDER_LIST_MY_FAIL,
   ORDER_LIST_MY_RESET,
+  ORDER_LIST_REQUEST,
+  ORDER_LIST_SUCCESS,
+  ORDER_LIST_FAIL,
 } from "../constants/orderConstants";
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -121,5 +124,30 @@ export const orderListMyReducer = (state = { orders: [] }, action) => {
       orders: [],
     };
   }
+  return state;
+};
+
+export const orderListReducer = (state = { orders: [] }, action) => {
+  if (action.type === ORDER_LIST_REQUEST) {
+    return {
+      ...state,
+      loading: true,
+    };
+  }
+  if (action.type === ORDER_LIST_SUCCESS) {
+    return {
+      ...state,
+      loading: false,
+      orders: action.payload,
+    };
+  }
+  if (action.type === ORDER_LIST_FAIL) {
+    return {
+      ...state,
+      loading: false,
+      error: action.payload,
+    };
+  }
+
   return state;
 };
