@@ -195,7 +195,7 @@ const OrderScreen = ({ match, history }) => {
             )}
             {loadingDeliver && <Loader />}
             {errorDeliver && <Message variant="danger">{errorDeliver}</Message>}
-            {userInfo &&
+            {/* {userInfo &&
               userInfo.data.isAdmin &&
               order.isPaid &&
               !order.isDelivered && (
@@ -208,7 +208,7 @@ const OrderScreen = ({ match, history }) => {
                     Mark as Delivered
                   </Button>
                 </ListGroup.Item>
-              )}
+              )} */}
           </Card>
         </Col>
       </Row>
